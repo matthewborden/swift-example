@@ -1,3 +1,7 @@
+cache:
+  paths:
+    - .cache
+
 env:
   SWIFT_CACHE_PATH: .cache
 
@@ -5,10 +9,6 @@ steps:
   - label: ":swift: Build"
     key: "build"
     command: "cd example-project && swift build --cache-path $SWIFT_CACHE_PATH"
-    plugins:
-      - artifacts#v1.9.3:
-          upload: "$SWIFT_CACHE_PATH"
-          compressed: cache.tgz
 
   - label: ":swift: Lint"
     command: "swiftlint"
@@ -16,7 +16,3 @@ steps:
   - label: ":swift: Test"
     command: "cd example-project && swift test --cache-path $SWIFT_CACHE_PATH"
     depends_on: ["build"]
-    plugins:
-      - artifacts#v1.9.3:
-          download: "$SWIFT_CACHE_PATH"
-          compressed: cache.tgz
